@@ -26,7 +26,7 @@ export default {
       },
       fields: [
         [this.$t('common.Basic'), ['name', 'protocol', 'username', 'type']],
-        [this.$t('common.Auth'), ['update_password', 'password', 'private_key']],
+        [this.$t('common.Auth'), ['password', 'private_key']],
         [this.$t('common.Command filter'), ['cmd_filters']],
         [this.$t('common.Other'), ['priority', 'sftp_root', 'comment']]
       ],
@@ -53,25 +53,7 @@ export default {
             disabled: true
           }
         },
-        update_password: {
-          label: this.$t('users.UpdatePassword'),
-          type: 'checkbox',
-          hidden: (formValue) => {
-            if (formValue.update_password) {
-              return true
-            }
-            return !this.$route.params.id
-          }
-        },
-        password: {
-          helpText: this.$t('common.passwordOrPassphrase'),
-          hidden: (formValue) => {
-            if (!this.$route.params.id) {
-              return false
-            }
-            return !formValue.update_password
-          }
-        },
+        password: fields.password,
         private_key: {
           component: UploadKey
         },
