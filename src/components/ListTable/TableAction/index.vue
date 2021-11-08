@@ -61,6 +61,10 @@ export default {
     selectedRows: {
       type: Array,
       default: () => []
+    },
+    tableColumns: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -73,10 +77,15 @@ export default {
       return this.selectedRows.length > 0
     },
     iSearchTableConfig() {
+      const keys = this.checkInTableColumns()
       const configDefault = {
-        url: this.tableUrl
+        url: this.tableUrl,
+        default: {
+          ...this.searchConfig?.default,
+          ...keys
+        }
       }
-      return Object.assign(configDefault, this.searchConfig)
+      return Object.assign(configDefault)
     }
   },
   methods: {
@@ -85,6 +94,26 @@ export default {
     },
     handleDateChange(val) {
       this.datePick(val)
+    },
+    // 判断url中的查询条件
+    checkInTableColumns() {
+      const q = this.$route.query
+      const routeQueryKeys = Object.keys(q)
+      const keys = {}
+      if (routeQueryKeys.length > 0) {
+        routeQueryKeys.forEach(i => {
+          this.tableColumns.forEach(k => {
+            if (i === k.prop || i === k) {
+              keys[i] = {
+                key: i,
+                label: k.label || '',
+                value: decodeURI(q[i])
+              }
+            }
+          })
+        })
+      }
+      return keys
     }
   }
 }

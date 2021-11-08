@@ -6,6 +6,7 @@
       :date-pick="handleDateChange"
       :selected-rows="selectedRows"
       :reload-table="reloadTable"
+      :table-columns="tableConfig.columns"
       v-bind="headerActions"
     />
     <IBox class="table-content">
